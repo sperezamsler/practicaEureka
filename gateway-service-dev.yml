@@ -2,18 +2,28 @@ server:
   port: 8080
   
 spring:
-  eureka:
-    client:
-      service-url:
-        defaultZone: http://localhost:8761/eureka
   cloud:
     gateway:
       routes:
         - id: movieRoute #Identificando la ruta del service de producto
           uri: http://localhost:8082/ #URL donde se hará el redirect segun el predicate definido
           predicates: #RReglas de análisis de una request
-            - Path=/movie/**
-        - id: libraryRoute #Identificando la ruta del service de producto
+            - Path=/movies/**
+        - id: catalogRoute #Identificando la ruta del service de producto
           uri: http://localhost:8084/ #URL donde se hará el redirect segun el predicate definido
           predicates: #RReglas de análisis de una request
-            - Path=/libraries/**
+            - Path=/catalogs/**
+      
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+info:
+  app:
+    name: gateway-service
+    description: Gateway Service
+    version: 1.0.0
